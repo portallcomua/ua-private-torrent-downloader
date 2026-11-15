@@ -1,0 +1,7 @@
+.env
+qbit-config/
+downloads/
+__pycache__/
+*.pyc
+*.log
+*.zip
