@@ -1,0 +1,102 @@
+.uaptd {
+    max-width: 1200px;
+}
+
+.uaptd-card {
+    background: #fff;
+    border: 1px solid #dcdcde;
+    border-radius: 12px;
+    padding: 22px;
+    margin: 20px 0;
+}
+
+.uaptd-card h2 {
+    margin-top: 0;
+}
+
+.uaptd-card label {
+    display: block;
+    font-weight: 600;
+    margin: 15px 0 6px;
+}
+
+.uaptd-add {
+    display: flex;
+    gap: 10px;
+}
+
+.uaptd-add input {
+    flex: 1;
+    min-width: 0;
+    padding: 10px;
+}
+
+.uaptd-heading {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.uaptd-status {
+    padding: 13px;
+    border-radius: 8px;
+    background: #f0f0f1;
+    margin: 12px 0;
+}
+
+.uaptd-good {
+    background: #e7f8ec;
+    color: #17632c;
+}
+
+.uaptd-bad {
+    background: #fceaea;
+    color: #9a2020;
+}
+
+.uaptd-progress {
+    height: 9px;
+    border-radius: 10px;
+    background: #e5e7eb;
+    overflow: hidden;
+    margin-bottom: 5px;
+}
+
+.uaptd-progress span {
+    display: block;
+    height: 100%;
+    background: #2271b1;
+}
+
+.uaptd-note {
+    color: #777;
+}
+
+.uaptd-table-wrap {
+    overflow-x: auto;
+}
+
+.uaptd-actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 5px;
+}
+
+.uaptd small {
+    color: #777;
+}
+
+@media(max-width:600px) {
+    .uaptd-add {
+        flex-direction: column;
+    }
+
+    .uaptd-heading {
+        align-items: flex-start;
+        gap: 10px;
+    }
+
+    .uaptd-card {
+        padding: 14px;
+    }
+}
