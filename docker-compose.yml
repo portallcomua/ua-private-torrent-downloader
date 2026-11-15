@@ -11,17 +11,17 @@ services:
       - /dev/net/tun:/dev/net/tun
 
     environment:
-      - VPN_SERVICE_PROVIDER=custom
-      - VPN_TYPE=wireguard
+      VPN_SERVICE_PROVIDER: custom
+      VPN_TYPE: wireguard
 
-      - WIREGUARD_PRIVATE_KEY=${WIREGUARD_PRIVATE_KEY}
-      - WIREGUARD_ADDRESSES=${WIREGUARD_ADDRESSES}
-      - WIREGUARD_PUBLIC_KEY=${WIREGUARD_PUBLIC_KEY}
-      - WIREGUARD_ENDPOINT_IP=${WIREGUARD_ENDPOINT_IP}
-      - WIREGUARD_ENDPOINT_PORT=${WIREGUARD_ENDPOINT_PORT:-51820}
+      WIREGUARD_PRIVATE_KEY: ${WIREGUARD_PRIVATE_KEY}
+      WIREGUARD_ADDRESSES: ${WIREGUARD_ADDRESSES}
+      WIREGUARD_PUBLIC_KEY: ${WIREGUARD_PUBLIC_KEY}
+      WIREGUARD_ENDPOINT_IP: ${WIREGUARD_ENDPOINT_IP}
+      WIREGUARD_ENDPOINT_PORT: ${WIREGUARD_ENDPOINT_PORT:-51820}
 
-      - FIREWALL_INPUT_PORTS=8090,8080
-      - TZ=Europe/Kyiv
+      FIREWALL_INPUT_PORTS: 8090,8080
+      TZ: Europe/Kyiv
 
     ports:
       - "127.0.0.1:8090:8090"
@@ -36,11 +36,13 @@ services:
     network_mode: "service:vpn"
 
     environment:
-      - PUID=1000
-      - PGID=1000
-      - TZ=Europe/Kyiv
-      - WEBUI_PORT=8080
-      - TORRENTING_PORT=6881
+      PUID: 1000
+      PGID: 1000
+      TZ: Europe/Kyiv
+      WEBUI_PORT: 8080
+      WEBUI_USERNAME: ${QBIT_USER:-admin}
+      WEBUI_PASSWORD: ${QBIT_PASS}
+      TORRENTING_PORT: 6881
 
     volumes:
       - ./qbit-config:/config
@@ -60,12 +62,22 @@ services:
     network_mode: "service:vpn"
 
     environment:
-      - API_TOKEN=${API_TOKEN}
-      - QBIT_HOST=http://127.0.0.1:8080
-      - QBIT_USER=${QBIT_USER:-admin}
-      - QBIT_PASS=${QBIT_PASS}
-      - DOWNLOAD_DIR=/downloads
-      - WG_INTERFACE=tun0
+      API_TOKEN: ${API_TOKEN}
+      DOWNLOAD_SECRET: ${DOWNLOAD_SECRET}
+
+      QBIT_HOST: http://127.0.0.1:8080
+      QBIT_USER: ${QBIT_USER:-admin}
+      QBIT_PASS: ${QBIT_PASS}
+
+      DOWNLOAD_DIR: /downloads
+      TEMP_DIR: /tmp/uaptd
+      WG_INTERFACE: tun0
+
+      POLL_SECONDS: 3
+      AUTO_PAUSE: "true"
+
+      MAX_DOWNLOAD_AGE_DAYS: ${MAX_DOWNLOAD_AGE_DAYS:-0}
+      MAX_DISK_USAGE_PERCENT: ${MAX_DISK_USAGE_PERCENT:-90}
 
     volumes:
       - ./downloads:/downloads
