@@ -1,7 +1,12 @@
 .env
+*.log
+*.pyc
+__pycache__/
+
 qbit-config/
 downloads/
-__pycache__/
-*.pyc
-*.log
+server/__pycache__/
+
 *.zip
+*.bak
+.DS_Store
