@@ -20,11 +20,12 @@ services:
       - WIREGUARD_ENDPOINT_IP=${WIREGUARD_ENDPOINT_IP}
       - WIREGUARD_ENDPOINT_PORT=${WIREGUARD_ENDPOINT_PORT:-51820}
 
-      - FIREWALL_INPUT_PORTS=8090
+      - FIREWALL_INPUT_PORTS=8090,8080
       - TZ=Europe/Kyiv
 
     ports:
       - "127.0.0.1:8090:8090"
+      - "127.0.0.1:8080:8080"
 
     restart: unless-stopped
 
