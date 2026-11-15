@@ -1,0 +1,75 @@
+services:
+
+  vpn:
+    image: qmcgaw/gluetun:v3.40.0
+    container_name: uaptd-vpn
+
+    cap_add:
+      - NET_ADMIN
+
+    devices:
+      - /dev/net/tun:/dev/net/tun
+
+    environment:
+      - VPN_SERVICE_PROVIDER=custom
+      - VPN_TYPE=wireguard
+
+      - WIREGUARD_PRIVATE_KEY=${WIREGUARD_PRIVATE_KEY}
+      - WIREGUARD_ADDRESSES=${WIREGUARD_ADDRESSES}
+      - WIREGUARD_PUBLIC_KEY=${WIREGUARD_PUBLIC_KEY}
+      - WIREGUARD_ENDPOINT_IP=${WIREGUARD_ENDPOINT_IP}
+      - WIREGUARD_ENDPOINT_PORT=${WIREGUARD_ENDPOINT_PORT:-51820}
+
+      - FIREWALL_INPUT_PORTS=8090
+      - TZ=Europe/Kyiv
+
+    ports:
+      - "127.0.0.1:8090:8090"
+
+    restart: unless-stopped
+
+  torrent:
+    image: lscr.io/linuxserver/qbittorrent:latest
+    container_name: uaptd-torrent
+
+    network_mode: "service:vpn"
+
+    environment:
+      - PUID=1000
+      - PGID=1000
+      - TZ=Europe/Kyiv
+      - WEBUI_PORT=8080
+      - TORRENTING_PORT=6881
+
+    volumes:
+      - ./qbit-config:/config
+      - ./downloads:/downloads
+
+    depends_on:
+      - vpn
+
+    restart: unless-stopped
+
+  api:
+    build:
+      context: ./server
+
+    container_name: uaptd-api
+
+    network_mode: "service:vpn"
+
+    environment:
+      - API_TOKEN=${API_TOKEN}
+      - QBIT_HOST=http://127.0.0.1:8080
+      - QBIT_USER=${QBIT_USER:-admin}
+      - QBIT_PASS=${QBIT_PASS}
+      - DOWNLOAD_DIR=/downloads
+      - WG_INTERFACE=tun0
+
+    volumes:
+      - ./downloads:/downloads
+
+    depends_on:
+      - torrent
+
+    restart: unless-stopped
